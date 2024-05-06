@@ -6,19 +6,14 @@ const childrenRoutes = [
   },
 
   {
-    path: "data",
-    name: "data",
-    component: () => import("./components/Data.vue"),
+    path: "notes",
+    name: "notes",
+    component: () => import("./components/Comments.vue"),
   },
   {
-    path: "user",
-    name: "user",
-    component: () => import("./components/User.vue"),
-  },
-  {
-    path: "dataObject",
-    name: "dataObject",
-    component: () => import("./components/DataObject.vue"),
+    path: "about",
+    name: "about",
+    component: () => import("./components/About.vue"),
   },
 ];
 
