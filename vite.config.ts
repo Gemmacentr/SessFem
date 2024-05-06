@@ -3,7 +3,7 @@ import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/SessFem/",
+  base:  process.env.NODE_ENV === "production" ? "/Vue-project/" : "/",
   publicPath: process.env.NODE_ENV === "production" ? "/Vue-project/" : "/",
   plugins: [vue()],
 });
