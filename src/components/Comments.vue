@@ -19,20 +19,35 @@ const removeComment = (index: any) => {
 };
 </script>
 <template>
-  <div>
-    <h2>Comments</h2>
-    <form @submit.prevent="addComment">
+  <div class="comments-container">
+    <div class="text-h2">
+      <h2>Emozioni ed Espressioni</h2>
+      <h4>
+        Questo è uno spazio all'interno del quale ognun@ può condividere
+        pensieri o sensazioni provati duranti gli incontri di Sessfem
+      </h4>
+    </div>
+    <form @submit.prevent="addComment" class="comment-form">
       <textarea
         v-model="newComment"
-        placeholder="Enter your comment"
+        placeholder="Sentiti liber* di esprimerti"
+        class="comment-textarea"
       ></textarea>
-      <button type="submit">Publish</button>
+      <button type="submit" class="publish-btn">Publish</button>
     </form>
-    <ul>
-      <li v-for="(comment, index) in comments" :key="index">
-        {{ comment }}
-        <button @click.prevent="removeComment" type="submit">Delete</button>
-      </li>
-    </ul>
+    <div class="comments-grid">
+      <div
+        v-for="(comment, index) in comments"
+        :key="index"
+        class="comment-item"
+      >
+        <div class="comment-card">
+          <span class="comment-text">{{ comment }}</span>
+          <button @click.prevent="removeComment(index)" class="delete-btn">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

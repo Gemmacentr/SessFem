@@ -25,15 +25,17 @@ aside {
   .menu-toggle-wrap {
     position: relative;
     top: 0;
+    background-color: transparent;
     margin-bottom: 1rem;
 
     .menu-toggle {
       transition: 0.2s ease-out;
+      color: $white-color;
       &:hover {
         .material-symbols-outlined {
           font-size: 2rem;
           color: $white-color;
-          transition: 0.1 ease-out;
+          transition: 0.2 ease-out;
         }
       }
     }

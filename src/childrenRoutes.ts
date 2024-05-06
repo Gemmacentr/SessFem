@@ -10,11 +10,6 @@ const childrenRoutes = [
     name: "notes",
     component: () => import("./components/Comments.vue"),
   },
-  {
-    path: "about",
-    name: "about",
-    component: () => import("./components/About.vue"),
-  },
 ];
 
 export default childrenRoutes;
