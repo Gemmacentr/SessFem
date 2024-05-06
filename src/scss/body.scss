@@ -1,0 +1,15 @@
+@use "./variables.scss" as *;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: #faf9f6;
+  html,
+  body {
+    height: 100% !important;
+  }
+}
