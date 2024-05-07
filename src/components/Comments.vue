@@ -7,15 +7,15 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import { db } from "../firebase/index.js";
+import { db } from "../firebase/index.ts";
 
-const todos = ref([]);
+const todos = ref<{ id: string; content: string; done: boolean }[]>([]);
 const todosCollectionRef = collection(db, "todos");
 
 // Load todos from Firestore on component mount
 onMounted(() => {
   onSnapshot(todosCollectionRef, (querySnapshot) => {
-    let fbTodos = [];
+    let fbTodos: Array<{ id: string; content: string; done: boolean }> = [];
     querySnapshot.forEach((doc) => {
       const todo = {
         id: doc.id,
@@ -39,7 +39,7 @@ const addComment = async () => {
 };
 
 // Function to remove a todo item
-const deleteTodo = (id) => {
+const deleteTodo = (id: any) => {
   console.log("Removing comment with ID:", id);
   deleteDoc(doc(todosCollectionRef, id));
 };
