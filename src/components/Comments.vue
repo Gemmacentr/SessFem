@@ -1,35 +1,47 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import {
+  collection,
+  onSnapshot,
+  addDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../firebase/index.js";
 
-// Define a reactive variable to hold the new comment
-const newComment = ref("");
-// Define an array to hold all the comments
-const comments = ref<string[]>([]);
+const todos = ref([]);
+const todosCollectionRef = collection(db, "todos");
 
-// Load comments from localStorage on component mount
+// Load todos from Firestore on component mount
 onMounted(() => {
-  const storedComments = localStorage.getItem("comments");
-  if (storedComments) {
-    comments.value = JSON.parse(storedComments);
-  }
+  onSnapshot(todosCollectionRef, (querySnapshot) => {
+    let fbTodos = [];
+    querySnapshot.forEach((doc) => {
+      const todo = {
+        id: doc.id,
+        content: doc.data().content,
+        done: doc.data().done,
+      };
+      fbTodos.push(todo);
+    });
+    todos.value = fbTodos;
+  });
 });
 
-// Function to add a new comment to the list
-const addComment = () => {
-  if (newComment.value.trim() !== "") {
-    comments.value.push(newComment.value);
-    // Clear the textarea after adding the comment
-    newComment.value = "";
-    // Save comments to localStorage
-    localStorage.setItem("comments", JSON.stringify(comments.value));
-  }
+// Function to add a new todo item
+const newComment = ref("");
+const addComment = async () => {
+  await addDoc(todosCollectionRef, {
+    content: newComment.value,
+    done: false,
+  });
+  newComment.value = "";
 };
 
-// Function to remove a comment from the list
-const removeComment = (index: any) => {
-  comments.value.splice(index, 1);
-  // Save comments to localStorage after removal
-  localStorage.setItem("comments", JSON.stringify(comments.value));
+// Function to remove a todo item
+const deleteTodo = (id) => {
+  console.log("Removing comment with ID:", id);
+  deleteDoc(doc(todosCollectionRef, id));
 };
 </script>
 
@@ -50,15 +62,13 @@ const removeComment = (index: any) => {
       ></textarea>
       <button type="submit" class="publish-btn">Publish</button>
     </form>
+
+    <!-- Mostra i commenti -->
     <div class="comments-grid">
-      <div
-        v-for="(comment, index) in comments"
-        :key="index"
-        class="comment-item"
-      >
+      <div v-for="(comment, index) in todos" :key="index" class="comment-item">
         <div class="comment-card">
-          <span class="comment-text">{{ comment }}</span>
-          <button @click.prevent="removeComment(index)" class="delete-btn">
+          <span class="comment-text">{{ comment.content }}</span>
+          <button @click.prevent="deleteTodo(index)" class="delete-btn">
             Delete
           </button>
         </div>
