@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 // Define a reactive variable to hold the new comment
 const newComment = ref("");
 // Define an array to hold all the comments
 const comments = ref<string[]>([]);
+
+// Load comments from localStorage on component mount
+onMounted(() => {
+  const storedComments = localStorage.getItem("comments");
+  if (storedComments) {
+    comments.value = JSON.parse(storedComments);
+  }
+});
 
 // Function to add a new comment to the list
 const addComment = () => {
@@ -12,12 +20,19 @@ const addComment = () => {
     comments.value.push(newComment.value);
     // Clear the textarea after adding the comment
     newComment.value = "";
+    // Save comments to localStorage
+    localStorage.setItem("comments", JSON.stringify(comments.value));
   }
 };
+
+// Function to remove a comment from the list
 const removeComment = (index: any) => {
   comments.value.splice(index, 1);
+  // Save comments to localStorage after removal
+  localStorage.setItem("comments", JSON.stringify(comments.value));
 };
 </script>
+
 <template>
   <div class="comments-container">
     <div class="text-h2">
