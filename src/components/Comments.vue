@@ -28,7 +28,6 @@ onMounted(() => {
   });
 });
 
-// Function to add a new todo item
 const newComment = ref("");
 const addComment = async () => {
   await addDoc(todosCollectionRef, {
@@ -38,10 +37,8 @@ const addComment = async () => {
   newComment.value = "";
 };
 
-// Function to remove a todo item
-const deleteTodo = (id: any) => {
-  console.log("Removing comment with ID:", id);
-  deleteDoc(doc(todosCollectionRef, id));
+const deleteTodo = async (id: string) => {
+  await deleteDoc(doc(todosCollectionRef, id));
 };
 </script>
 
@@ -63,12 +60,11 @@ const deleteTodo = (id: any) => {
       <button type="submit" class="publish-btn">Publish</button>
     </form>
 
-    <!-- Mostra i commenti -->
     <div class="comments-grid">
       <div v-for="(comment, index) in todos" :key="index" class="comment-item">
         <div class="comment-card">
           <span class="comment-text">{{ comment.content }}</span>
-          <button @click.prevent="deleteTodo(index)" class="delete-btn">
+          <button @click.prevent="deleteTodo(comment.id)" class="delete-btn">
             Delete
           </button>
         </div>
